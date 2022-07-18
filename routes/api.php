@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/room',[RoomController::class,'create']);
-Route::get('/room/types',[RoomController::class,'getTypes']);
-Route::Get('/rooms',[RoomController::class,'getAll']);
+Route::post('register',[UserController::class,'register']);
+Route::post('login',[UserController::class,'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function(){
+   Route::get('profile',[UserController::class,'userProfile']);
+   Route::get('logout',[UserController::class,'logout']);
+});
+
+Route::middleware('auth:sanctum')->get('rooms',[RoomController::class,'getAll']);
