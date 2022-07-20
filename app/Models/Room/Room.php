@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Room;
 
+use App\Models\Message;
 use App\Models\Type;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
     use HasFactory;
-
 
     public function types(){
         return $this->belongsToMany(Type::class);
@@ -26,5 +27,4 @@ class Room extends Model
     public function messages(){
         return $this->hasMany(Message::class);
     }
-
 }

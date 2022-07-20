@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
+use App\Models\User\User;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -36,8 +37,6 @@ class UserController extends Controller
         "password" => "required"
       ]);
 
-
-
       $user = User::where('email',$request->email)->first();
 
       //Checking if the user is registered
@@ -57,7 +56,6 @@ class UserController extends Controller
       }
 
       $token = $user->createToken("auth_token");
-
 
       return response()->json([
           'status' => 1,

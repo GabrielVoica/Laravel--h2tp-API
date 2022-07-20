@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
-use App\Models\Room;
 use App\Models\Message;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Room\Room;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
-
 
     public function messages(){
         return $this->hasMany(Message::class);

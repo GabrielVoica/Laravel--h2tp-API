@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Type;
-use App\Models\User;
+use App\Models\Room\Room;
+use App\Models\User\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Room;
 
 class DatabaseSeeder extends Seeder
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Type;
 
-use App\Models\Type;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class TypeController extends Controller
 {
     public function create(Request $request){
-      
+
     }
 }
