@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\User\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -79,5 +79,18 @@ class UserController extends Controller
             'status' => 1,
             'msg' => 'Session ended',
         ],200);
+    }
+
+
+    public function getUserRooms(Request $request){
+        $user = Auth::user();
+
+        $rooms = $user->rooms()->get();
+
+        return response()->json([
+            'status' => 1,
+            'msg' => 'User rooms',
+            'data' => $rooms
+        ]);
     }
 }

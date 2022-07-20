@@ -1,10 +1,7 @@
 <?php
 
-namespace App\Models\Room;
+namespace App\Models;
 
-use App\Models\Message;
-use App\Models\Type;
-use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
