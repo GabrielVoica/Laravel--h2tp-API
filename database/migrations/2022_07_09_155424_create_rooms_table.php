@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->boolean('private')->default(true);
             $table->timestamps();
 
             $table->foreign('user_id')
