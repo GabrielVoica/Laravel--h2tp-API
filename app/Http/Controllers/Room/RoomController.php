@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Room;
 
-use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class RoomController extends Controller
 {
@@ -40,7 +41,7 @@ class RoomController extends Controller
         //TODO Add validation constraints
         $request->validate([
             'name' => 'required',
-            'admin_id' => 'required', //TODO Check that the admin id exists
+            'admin_id' => 'required|exists:users,id',
             'private' => 'required'
         ]);
 
@@ -66,6 +67,7 @@ class RoomController extends Controller
     }
 
     public function deleteRoom(Request $request,$id){
+
        $room = Room::find($id);
 
        //TODO Make this a condition
@@ -75,5 +77,38 @@ class RoomController extends Controller
                'msg' => 'The room with the provided id does not exist'
            ],404);
        }
+    }
+
+
+    public function enterRoom(Request $request,$id){
+      if(!isset(Room::find($id)->id)){
+        return response()->json([
+            'status' => 0,
+            'msg' => 'The room with the probided id does not exist',
+        ],404);
+      }
+
+      $user = Auth::user();
+      $room = Room::find($id);
+
+      if($user->rooms->contains($room)){
+        return response()->json([
+            'status' => 0,
+            'msg' => 'User already inside the room'
+        ],400);
+      }
+
+      $user->rooms()->attach($room);
+
+      return response()->json([
+        'status' => 1,
+        'msg' => 'User added to the room'
+      ],200);
+    }
+
+
+    //TODO Implement function
+    public function exitRoom(Request $request,$id){
+
     }
 }

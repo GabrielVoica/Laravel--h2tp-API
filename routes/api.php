@@ -26,5 +26,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
    Route::get('room/{id}',[RoomController::class,'getRoom']);
    Route::get('user/rooms',[UserController::class,'getUserRooms'])->name('getUserRooms');  //Get the current logged user rooms
    Route::post('room/create',[RoomController::class,'createRoom'])->name('createRoom');
-   Route::post('room/delete/{id}',[RoomController::class,'deleteRoom'])->name('deleteRoom');
+   Route::delete('room/delete/{id}',[RoomController::class,'deleteRoom'])->name('deleteRoom');
+   Route::post('room/enter/{id}',[RoomController::class,'enterRoom']);
+   Route::delete('room/exit/{id}',[RoomController::class,'exitRoom']);
 });
