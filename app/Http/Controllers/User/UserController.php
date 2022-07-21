@@ -77,11 +77,8 @@ class UserController extends Controller
 
     public function logout(){
         auth()->user()->tokens()->delete();
-
-        return auth()->user();
-
         auth()->user()->connected = 0;
-
+        auth()->user()->save();
 
         return response()->json([
             'status' => 1,
