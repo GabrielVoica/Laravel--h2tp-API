@@ -75,17 +75,35 @@ class UserController extends Controller
         ],200);
     }
 
-    public function logout(){
-        auth()->user()->tokens()->delete();
-        auth()->user()->connected = 0;
-        auth()->user()->save();
 
-        return response()->json([
-            'status' => 1,
-            'msg' => 'Session ended',
-        ],200);
+    public function editProfile(Request $request){
+       $user = Auth::user();
+
+       $request->validate([
+           'username' => 'max:50|unique:users',
+           'email' => 'email|unique:users|max:60'
+       ]);
+
+       $request->whenFilled('username',function($input){
+           Auth::user()->username = $input;
+           Auth::user()->save();
+       });
+
+       $request->whenFilled('email',function($input){
+           Auth::user()->email = $input;
+           Auth::user()->save();
+       });
+
+       $request->whenFilled('password',function($input){
+           Auth::user()->password = $input;
+           Auth::user()->save();
+       });
+
+       return response()->json([
+         'status' => 1,
+         'msg' => 'User data updated',
+       ],200);
     }
-
 
     public function getUserRooms(Request $request){
         $user = Auth::user();
@@ -97,5 +115,16 @@ class UserController extends Controller
             'msg' => 'User rooms',
             'data' => $rooms
         ]);
+    }
+
+    public function logout(){
+        auth()->user()->tokens()->delete();
+        auth()->user()->connected = 0;
+        auth()->user()->save();
+
+        return response()->json([
+            'status' => 1,
+            'msg' => 'Session ended',
+        ],200);
     }
 }

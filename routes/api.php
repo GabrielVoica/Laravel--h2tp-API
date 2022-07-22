@@ -21,6 +21,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
    //User related routes
    Route::get('profile',[UserController::class,'userProfile'])->name('profile');
    Route::get('logout',[UserController::class,'logout'])->name('logout');
+   Route::post('profile/edit',[UserController::class,'editProfile'])->name('editProfile');
+
 
    //Rooms related routes
    Route::get('room/{id}',[RoomController::class,'getRoom']);
