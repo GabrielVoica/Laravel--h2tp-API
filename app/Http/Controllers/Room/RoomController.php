@@ -36,6 +36,17 @@ class RoomController extends Controller
     }
 
 
+    public function getRoomMessages(Request $request, $id){
+       $room = Room::find($id);
+
+       return response()->json([
+           'status' => 1,
+           'msg' => 'Room messages returned',
+           'data' => $room->messages()->get()
+       ]);
+    }
+
+
     public function createRoom(Request $request){
 
         //TODO Add validation constraints
@@ -69,18 +80,31 @@ class RoomController extends Controller
     public function deleteRoom(Request $request,$id){
 
        $room = Room::find($id);
+       $admin = Auth::user();
+       $roomAdminId = $room->user_id;
 
-       //TODO Make this a condition
        if(!isset($room)){
            return response()->json([
                'status' => 1,
                'msg' => 'The room with the provided id does not exist'
            ],404);
        }
+
+       if($admin->id !== $roomAdminId){
+           return response()->json([
+               'status' => 1,
+               'msg' => 'You have no permission to delete this room'
+           ],401);
+       }
+
+
+       $room->users()->detach(User::all());
+       $room->messages()->delete();
+       $room->delete();
     }
 
 
-    public function enterRoom(Request $request,$id){
+    public function joinRoom(Request $request,$id){
       if(!isset(Room::find($id)->id)){
         return response()->json([
             'status' => 0,
@@ -106,9 +130,23 @@ class RoomController extends Controller
       ],200);
     }
 
-
-    //TODO Implement function
     public function exitRoom(Request $request,$id){
 
+        $user = Auth::user();
+        $room = Room::find($id);
+
+        if(!$user->rooms->contains($room)){
+            return response()->json([
+                'status' => 0,
+                'msg' => 'The user is not part of this room'
+            ],404);
+        }
+
+        $user->rooms()->detach($room);
+
+        return response()->json([
+            'status' => 1,
+            'msg' => 'User left the room'
+        ],200);
     }
 }
