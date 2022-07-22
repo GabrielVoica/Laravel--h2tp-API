@@ -27,7 +27,6 @@ class UserController extends Controller
         "status" => 1,
         "msg" => "User registered"
       ]);
-
     }
 
     public function login(Request $request){
@@ -81,7 +80,8 @@ class UserController extends Controller
 
        $request->validate([
            'username' => 'max:50|unique:users',
-           'email' => 'email|unique:users|max:60'
+           'email' => 'email|unique:users|max:60',
+           'password' => 'max:30|confirmed'
        ]);
 
        $request->whenFilled('username',function($input){
@@ -95,7 +95,7 @@ class UserController extends Controller
        });
 
        $request->whenFilled('password',function($input){
-           Auth::user()->password = $input;
+           Auth::user()->password = Hash::make($input);
            Auth::user()->save();
        });
 

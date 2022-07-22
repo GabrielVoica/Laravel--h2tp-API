@@ -5,8 +5,6 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -21,6 +19,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
    //User related routes
    Route::get('profile',[UserController::class,'userProfile'])->name('profile');
    Route::get('logout',[UserController::class,'logout'])->name('logout');
+
    Route::post('profile/edit',[UserController::class,'editProfile'])->name('editProfile');
 
 
@@ -31,6 +30,9 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 
    Route::post('room/create',[RoomController::class,'createRoom'])->name('createRoom');
    Route::post('room/delete/{id}',[RoomController::class,'deleteRoom'])->name('deleteRoom');
-   Route::post('room/join/{id}',[RoomController::class,'joinRoom']);
+   Route::post('room/join/{id}',[RoomController::class,'joinRoom'])
+   ->middleware('banned');
+
    Route::post('room/exit/{id}',[RoomController::class,'exitRoom']);
+   Route::post('room/user/ban/{id}',[RoomController::class,'banUser']);
 });

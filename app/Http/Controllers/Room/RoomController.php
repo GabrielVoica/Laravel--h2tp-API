@@ -39,12 +39,19 @@ class RoomController extends Controller
     public function getRoomMessages(Request $request, $id){
        $room = Room::find($id);
 
+       $messages = $room->messages()->get();
+
+       foreach($messages as $message){
+           $message->sender_username = User::find($message->sender_id)->username;
+       }
+
        return response()->json([
            'status' => 1,
            'msg' => 'Room messages returned',
-           'data' => $room->messages()->get()
+           'data' => $messages
        ]);
     }
+
 
 
     public function createRoom(Request $request){

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Block;
+
 
 class User extends Authenticatable
 {
@@ -21,5 +23,9 @@ class User extends Authenticatable
 
     public function createdRooms(){
         return $this->hasMany(Room::class);
+    }
+
+    public function blocks(){
+        return $this->hasMany(Block::class);
     }
 }
